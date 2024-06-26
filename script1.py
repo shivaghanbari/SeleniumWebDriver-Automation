@@ -7,21 +7,26 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from Host import HostName
 
-# Initialize the Chrome driver (make sure you have the ChromeDriver installed and its path set in the system PATH)
+# Initialize the Chrome driver
 driver = webdriver.Chrome()
 
-# Open a website and maximize
+#  Maximize and open a website
 driver.maximize_window()
 driver.get(HostName.host)
+
+# Finding menu and click on first menu item to show car ads list
 driver.find_element('class name', Variables.menu).click()
 driver.find_element('xpath', Variables.menu_item).click()
+
+# Scroll down to find special word
 elem = driver.find_element('id', Variables.special_word)
 driver.execute_script("arguments[0].scrollIntoView();", elem)
-
 assert elem.text == 'موارد خاص'
 
 # Scroll to the top of the page
 driver.execute_script("window.scrollTo(0, 0);")
+
+# Search on search bar and click on first item to show brand ads list
 driver.find_element(By.CLASS_NAME, Variables.search_icon).click()
 driver.find_element(By.ID, Variables.search_input).click()
 driver.find_element(By.ID, Variables.search_input).send_keys("پژو ۲۰۶")
@@ -32,7 +37,7 @@ search_result = WebDriverWait(driver, 10).until(
 )
 search_result.click()
 
-time.sleep(5)
+time.sleep(2)
 # Print the title of the page
 print(driver.title)
 # Close the browser
