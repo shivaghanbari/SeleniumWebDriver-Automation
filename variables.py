@@ -6,3 +6,4 @@ class Variables:
     search_input = 'globalSearchInput'
     result_one = '#__layout > div > div.bama-global-search.bama-global-search--active > ' \
                  'div.bama-global-search__result-container > div.bama-global-search__result-holder > a:nth-child(1) '
+

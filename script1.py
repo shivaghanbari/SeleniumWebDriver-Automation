@@ -12,7 +12,7 @@ driver = webdriver.Chrome()
 
 #  Maximize and open a website
 driver.maximize_window()
-driver.get(HostName.host)
+driver.get(HostName.stage_host)
 
 # Finding menu and click on first menu item to show car ads list
 driver.find_element('class name', Variables.menu).click()
