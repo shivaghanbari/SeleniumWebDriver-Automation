@@ -10,7 +10,7 @@ from Host import HostName
 import unittest
 
 
-class CarAdsTest(unittest.TestCase):
+class LoginPageUser(unittest.TestCase):
     def setUp(self):
         # Initialize the Chrome driver
         self.driver = webdriver.Chrome()
@@ -19,38 +19,45 @@ class CarAdsTest(unittest.TestCase):
         if not os.path.exists(self.screenshot_dir):
             os.makedirs(self.screenshot_dir)
 
-    def test_search_car_ads(self):
+    def test_login_to_Bama_user(self):
         driver = self.driver
         driver.get(HostName.stage_host)
-
-        # Finding menu and click on first menu item to show car ads list
-        driver.find_element(By.CLASS_NAME, Variables.menu).click()
-        driver.find_element(By.XPATH, Variables.menu_item).click()
-
-        # Scroll down to find special word
-        elem = driver.find_element(By.ID, Variables.special_word)
-        driver.execute_script("arguments[0].scrollIntoView();", elem)
-        time.sleep(3)
-        self.assertEqual(elem.text, 'موارد خاص')
-
-        # Scroll to the top of the page
-        driver.execute_script("window.scrollTo(0, 0);")
-
-        # Search on search bar and click on first item to show brand ads list
-        driver.find_element(By.CLASS_NAME, Variables.search_icon).click()
-        search_bar = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.ID, Variables.search_input))
+        wait = WebDriverWait(driver, 10)
+        driver.find_element(By.ID, Variables.profile).click()
+        login_to_profile = wait.until(
+            EC.element_to_be_clickable((By.CLASS_NAME, Variables.auth_login))
         )
-        search_bar.click()
-        search_bar.send_keys("پژو ۲۰۶")
-
-        # Wait for the search result to be present and clickable, then click it
-        search_result = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, Variables.result_one))
-        )
-        search_result.click()
-
+        login_to_profile.click()
         time.sleep(2)
+
+        iframe = wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, Variables.iFrame)))
+        driver.switch_to.frame(iframe)
+
+        phone_number_element = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, Variables.phone_number)
+        )
+        )
+
+        phone_number_element.click()
+        phone_number_element.send_keys("09128164696")
+
+        continue_button = driver.find_element(By.CLASS_NAME, Variables.continue_button)
+        continue_button.click()
+        enter_otp = driver.find_element(By.ID, Variables.otp_one)
+        enter_otp.click()
+        enter_otp.send_keys("9")
+        driver.find_element(By.ID, Variables.otp_two).send_keys("9")
+        driver.find_element(By.ID, Variables.otp_three).send_keys("9")
+        driver.find_element(By.ID, Variables.otp_four).send_keys("9")
+
+        continue_button = wait.until(
+            EC.element_to_be_clickable((By.CLASS_NAME, Variables.continue_button))
+        )
+        # continue_button = driver.find_element(By.CLASS_NAME, Variables.continue_button)
+        continue_button.click()
+        time.sleep(5)
+
         # Print the title of the page
         print(driver.title)
         pass
@@ -58,14 +65,14 @@ class CarAdsTest(unittest.TestCase):
     def tearDown(self):
         if sys.exc_info()[0] is not None:
             # Take a screenshot if the test case fails
-            screenshot_name = f'Exc_Err.CarAdsTest_{time.strftime("%Y-%m-%d_%H-%M-%S")}.png'
+            screenshot_name = f'Exc_Err.LoginUser_{time.strftime("%Y-%m-%d_%H-%M-%S")}.png'
             screenshot_path = os.path.join(self.screenshot_dir, screenshot_name)
             self.driver.save_screenshot(screenshot_path)
             print(f'Screenshot saved at: {screenshot_path}')
 
         else:
             # Take a screenshot regardless of the test case result
-            screenshot_name = f'TestResults.CarAdsTest_{time.strftime("%Y-%m-%d_%H-%M-%S")}.png'
+            screenshot_name = f'TestResults.LoginUser_{time.strftime("%Y-%m-%d_%H-%M-%S")}.png'
             screenshot_path = os.path.join(self.screenshot_dir, screenshot_name)
             self.driver.save_screenshot(screenshot_path)
             print(f'Screenshot saved at: {screenshot_path}')
@@ -81,7 +88,7 @@ if __name__ == '__main__':
 
     # Create a test suite
     suite = unittest.TestSuite()
-    suite.addTest(CarAdsTest('test_search_car_ads'))
+    suite.addTest(LoginPageUser('test_login_to_Bama_user'))
 
     # Generate the HTML report
     with open(os.path.join(output_dir, 'TestResults.html'), 'w', encoding='utf-8') as report_file:
