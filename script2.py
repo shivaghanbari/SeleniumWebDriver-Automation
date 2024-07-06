@@ -28,10 +28,11 @@ class LoginPageUser(unittest.TestCase):
             EC.element_to_be_clickable((By.CLASS_NAME, Variables.auth_login))
         )
         login_to_profile.click()
-        time.sleep(2)
 
+        # Focus on login frame to enter phone number
         iframe = wait.until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, Variables.iFrame)))
+            EC.presence_of_element_located((By.CSS_SELECTOR, Variables.iFrame))
+        )
         driver.switch_to.frame(iframe)
 
         phone_number_element = wait.until(EC.element_to_be_clickable(
