@@ -1,12 +1,12 @@
 import os
 import time
 import sys
-from variables import Variables
+from Model.variables import Variables
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from Host import HostName
+from Model.Host import HostName
 import unittest
 
 
@@ -15,7 +15,7 @@ class CarCalTest(unittest.TestCase):
         # Initialize the Chrome driver
         self.driver = webdriver.Chrome()
         self.driver.maximize_window()
-        self.screenshot_dir = 'reports/screenshots'
+        self.screenshot_dir = '../reports/screenshots'
         if not os.path.exists(self.screenshot_dir):
             os.makedirs(self.screenshot_dir)
 
@@ -56,7 +56,7 @@ class CarCalTest(unittest.TestCase):
 
 if __name__ == '__main__':
     # Specify the output directory for the HTML report
-    output_dir = 'reports'
+    output_dir = '../reports'
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
